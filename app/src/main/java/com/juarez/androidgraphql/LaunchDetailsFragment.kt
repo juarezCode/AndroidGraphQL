@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.juarez.androidgraphql.databinding.FragmentLaunchDetailsBinding
 
 class LaunchDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentLaunchDetailsBinding
-//    val :  by navArgs()
+    val args: LaunchDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
