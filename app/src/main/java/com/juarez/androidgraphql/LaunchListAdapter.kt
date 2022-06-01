@@ -22,6 +22,8 @@ class LaunchListAdapter(
         return ViewHolder(binding)
     }
 
+    var onEndOfListReached: (() -> Unit)? = null
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val launch = launches[position]
 
@@ -29,6 +31,10 @@ class LaunchListAdapter(
         holder.binding.missionName.text = launch.mission?.name ?: "unknown"
         holder.binding.missionPatch.load(launch.mission?.missionPatch) {
             placeholder(R.drawable.ic_placeholder)
+        }
+
+        if (position == launches.size - 1) {
+            onEndOfListReached?.invoke()
         }
     }
 }
