@@ -36,7 +36,8 @@ class LaunchDetailsFragment : Fragment() {
             binding.error.visibility = View.GONE
 
             val response = try {
-                apolloClient.query(LaunchDetailsQuery(id = args.launchId)).execute()
+                apolloClient(requireContext()).query(LaunchDetailsQuery(id = args.launchId))
+                    .execute()
             } catch (e: ApolloException) {
                 binding.progressBar.visibility = View.GONE
                 binding.error.text = "Oh no... A protocol error happened"
@@ -82,6 +83,31 @@ class LaunchDetailsFragment : Fragment() {
                     R.id.open_login
                 )
                 return@setOnClickListener
+            }
+
+            binding.bookButton.visibility = View.INVISIBLE
+            binding.bookProgressBar.visibility = View.VISIBLE
+
+            lifecycleScope.launchWhenResumed {
+                val mutation = if (isBooked) {
+                    CancelTripMutation(id = args.launchId)
+                } else {
+                    BookTripMutation(id = args.launchId)
+                }
+
+                val response = try {
+                    apolloClient(requireContext()).mutation(mutation).execute()
+                } catch (e: ApolloException) {
+                    configureButton(isBooked)
+                    return@launchWhenResumed
+                }
+
+                if (response.hasErrors()) {
+                    configureButton(isBooked)
+                    return@launchWhenResumed
+                }
+
+                configureButton(!isBooked)
             }
         }
     }
