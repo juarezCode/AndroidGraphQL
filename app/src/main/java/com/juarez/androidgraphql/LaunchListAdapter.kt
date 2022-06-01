@@ -3,6 +3,7 @@ package com.juarez.androidgraphql
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.juarez.androidgraphql.databinding.LaunchItemBinding
 
 class LaunchListAdapter(
@@ -22,8 +23,12 @@ class LaunchListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val launch = launches.get(position)
+        val launch = launches[position]
 
         holder.binding.site.text = launch.site ?: "unknown"
+        holder.binding.missionName.text = launch.mission?.name ?: "unknown"
+        holder.binding.missionPatch.load(launch.mission?.missionPatch) {
+            placeholder(R.drawable.ic_placeholder)
+        }
     }
 }
