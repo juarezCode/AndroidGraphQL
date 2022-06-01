@@ -20,6 +20,7 @@ fun apolloClient(context: Context): ApolloClient {
 
     instance = ApolloClient.Builder()
         .serverUrl("https://apollo-fullstack-tutorial.herokuapp.com/graphql")
+        .webSocketServerUrl("wss://apollo-fullstack-tutorial.herokuapp.com/graphql")
         .okHttpClient(okHttpClient)
         .build()
 
